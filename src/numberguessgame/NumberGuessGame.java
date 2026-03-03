@@ -1,261 +1,215 @@
 package numberguessgame;
 
-import javax.swing.*; // GUI components jaise JButton, JLabel, JTextField
-import java.awt.*; // GUI design ke liye layout aur colors
-import java.awt.event.*; // Button click waghera handle karne ke liye
-import java.io.*; // File read/write ke liye
-import java.util.Random; // Random number generate karne ke liye
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.Random;
 
-public class NumberGuessGame extends JFrame implements ActionListener {
+public class NumberGuessGame extends JFrame implements ActionListener{
 
-    // GUI components declare kiye ja rahe hain
-    private final JTextField inputfield;
-    private final JButton guessbutton, resetbutton;
-    private final JLabel messagelabel, highscorelabel;
+    private final JTextField in; //inputField
+    private final JButton gBtn,rBtn; //guessButton,resetButton
+    private final JLabel msg,hsLbl; //messageLabel,highScoreLabel
 
-    // Game-related variables
-    private int randomnumber; // Random number jo guess karna hai
-    private int attemptsleft; // Kitne guesses remaining hain
-    private int attemptsused; // Kitne guesses use ho chuke hain
-    private int highscore = Integer.MAX_VALUE; // Best score ab tak
+    private int rn,left,used,hs = Integer.MAX_VALUE; //randomNumber,attemptsLeft,attemptsUsed,highScore
 
-    private static final int max_attempts = 10; // Maximum 10 attempts allowed
-    private static final String highscore_file = "highscore.txt"; // Highscore store karne ka file
+    private static final int MAX=10; //maxAttempts
+    private static final String FILE="highscore.txt"; //highScoreFile
 
-    // Constructor — Game GUI create karta hai
-    public NumberGuessGame() {
-        setTitle("🎯 Number Guessing Game"); // Window ka title
-        setSize(600, 400); // Window ka size
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // Close button ka behavior
-        setLocationRelativeTo(null); // Screen ke center mein show hoga
-        setResizable(false); // Resize allow nahi
+    public NumberGuessGame(){
+        setTitle("🎯 Number Guessing Game");
+        setSize(600,400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
 
-        // Background panel set kiya gaya hai with custom image
-        backgroundpanel panel = new backgroundpanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Components vertically arrange honge
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40)); // Padding add ki gayi
-        add(panel); // Panel ko frame mein add kiya
+        BgPanel p=new BgPanel(); //backgroundPanel
+        p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+        p.setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+        add(p);
 
-        // Title label banaya gaya
-        JLabel title = new JLabel("🎯 Guess a number between 1 and 100", JLabel.CENTER);
-        title.setFont(new Font("Segoe UI Emoji", Font.BOLD, 22)); // Emoji font set kiya
-        title.setForeground(Color.WHITE); // Text ka color white
-        title.setAlignmentX(Component.CENTER_ALIGNMENT); // Center align
-        panel.add(title);
-        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Space add ki gayi
+        JLabel title=new JLabel("🎯 Guess number between 1 and 100",JLabel.CENTER);
+        title.setFont(new Font("Segoe UI Emoji",Font.BOLD,22));
+        title.setForeground(Color.WHITE);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(title);
+        p.add(Box.createRigidArea(new Dimension(0,20)));
 
-        // User input field banaya gaya
-        inputfield = new JTextField();
-        inputfield.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 18));
-        inputfield.setMaximumSize(new Dimension(200, 40));
-        inputfield.setHorizontalAlignment(JTextField.CENTER); // Text center mein hoga
-        inputfield.setBackground(new Color(230, 230, 250)); // Light lavender background
-        inputfield.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(inputfield);
+        in=new JTextField();
+        in.setFont(new Font("Segoe UI Emoji",Font.PLAIN,18));
+        in.setMaximumSize(new Dimension(200,40));
+        in.setHorizontalAlignment(JTextField.CENTER);
+        in.setBackground(new Color(230,230,250));
+        in.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(in);
+        p.add(Box.createRigidArea(new Dimension(0,15)));
 
-        panel.add(Box.createRigidArea(new Dimension(0, 15)));
+        gBtn=new JButton("Guess");
+        gBtn.setFont(new Font("Segoe UI Emoji",Font.BOLD,18));
+        gBtn.setBackground(new Color(0,123,255));
+        gBtn.setForeground(Color.WHITE);
+        gBtn.setFocusPainted(false);
+        gBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        gBtn.addActionListener(this);
+        in.addActionListener(this);
+        p.add(gBtn);
+        p.add(Box.createRigidArea(new Dimension(0,15)));
 
-        // "Guess" button banaya gaya
-        guessbutton = new JButton("Guess");
-        guessbutton.setFont(new Font("Segoe UI Emoji", Font.BOLD, 18));
-        guessbutton.setBackground(new Color(0, 123, 255)); // Blue background
-        guessbutton.setForeground(Color.WHITE); // White text
-        guessbutton.setFocusPainted(false); // Button border disable
-        guessbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        guessbutton.addActionListener(this); // Click action handle
-        inputfield.addActionListener(this); // Enter key pe bhi kaam karega
-        panel.add(guessbutton);
+        msg=new JLabel("You have 10 attempts.",JLabel.CENTER);
+        msg.setFont(new Font("Segoe UI Emoji",Font.PLAIN,16));
+        msg.setForeground(Color.YELLOW);
+        msg.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(msg);
+        p.add(Box.createRigidArea(new Dimension(0,10)));
 
-        panel.add(Box.createRigidArea(new Dimension(0, 15)));
+        hsLbl=new JLabel("🏆 High Score: --",JLabel.CENTER);
+        hsLbl.setFont(new Font("Segoe UI Emoji",Font.PLAIN,16));
+        hsLbl.setForeground(new Color(144,238,144));
+        hsLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(hsLbl);
+        p.add(Box.createRigidArea(new Dimension(0,20)));
 
-        // Message label jo user ko guide karega
-        messagelabel = new JLabel("You have 10 attempts.", JLabel.CENTER);
-        messagelabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
-        messagelabel.setForeground(Color.YELLOW);
-        messagelabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(messagelabel);
+        rBtn=new JButton("Reset Game");
+        rBtn.setFont(new Font("Segoe UI Emoji",Font.BOLD,16));
+        rBtn.setBackground(new Color(220,53,69));
+        rBtn.setForeground(Color.WHITE);
+        rBtn.setFocusPainted(false);
+        rBtn.setEnabled(false);
+        rBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rBtn.addActionListener(e -> reset());
+        p.add(rBtn);
 
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        // Highscore label
-        highscorelabel = new JLabel("🏆 High Score: --", JLabel.CENTER);
-        highscorelabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
-        highscorelabel.setForeground(new Color(144, 238, 144));
-        highscorelabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(highscorelabel);
-
-        panel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        // Reset button
-        resetbutton = new JButton("Reset Game");
-        resetbutton.setFont(new Font("Segoe UI Emoji", Font.BOLD, 16));
-        resetbutton.setBackground(new Color(220, 53, 69)); // Red color
-        resetbutton.setForeground(Color.WHITE);
-        resetbutton.setFocusPainted(false);
-        resetbutton.setEnabled(false); // Pehle disable hoga
-        resetbutton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        resetbutton.addActionListener(e -> resetgame()); // Reset click event
-        panel.add(resetbutton);
-
-        panel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        // Highscore file se load karo
-        loadhighscore();
-
-        // Random number generate karo game ke start mein
-        generaterandomnumber();
-
-        // Show the GUI
+        loadHS();
+        genNum();
         setVisible(true);
     }
 
-    // Random number generate karne wali method
-    private void generaterandomnumber() {
-        randomnumber = new Random().nextInt(100) + 1; // 1-100 ke beech number
-        attemptsleft = max_attempts; // Attempts reset
-        attemptsused = 0; // Used attempts bhi reset
-        messagelabel.setText("You have " + max_attempts + " attempts.");
-        messagelabel.setForeground(Color.YELLOW);
+    private void genNum(){
+        rn=new Random().nextInt(100)+1;
+        left=MAX;
+        used=0;
+        msg.setText("You have " + MAX + " attempts.");
+        msg.setForeground(Color.YELLOW);
     }
 
-    // Game ko reset karne wali method
-    private void resetgame() {
-        generaterandomnumber(); // New number generate karo
-        inputfield.setText(""); // Input field clear karo
-        inputfield.setEditable(true);
-        inputfield.requestFocus(); // Cursor input pe le jao
-        guessbutton.setEnabled(true); // Guess button active
-        resetbutton.setEnabled(false); // Reset button disable
+    private void reset(){
+        genNum();
+        in.setText("");
+        in.setEditable(true);
+        in.requestFocus();
+        gBtn.setEnabled(true);
+        rBtn.setEnabled(false);
     }
 
-    // Highscore file se read karne wali method
-    private void loadhighscore() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(highscore_file))) {
-            String line = reader.readLine();
-            if (line != null) {
-                highscore = Integer.parseInt(line.trim()); // File se score read
-            }
-        } catch (IOException | NumberFormatException e) {
-            highscore = Integer.MAX_VALUE; // Agar error aye to default
+    private void loadHS(){
+        try(BufferedReader br=new BufferedReader(new FileReader(FILE))){
+            String line=br.readLine();
+            if(line!=null)
+                hs=Integer.parseInt(line.trim());
+        }catch(Exception e){
+            hs=Integer.MAX_VALUE;
         }
-        updatehighscorelabel(); // Label update karo
+        updateHS();
     }
 
-    // Highscore ko file mein save karne wali method
-    private void savehighscore() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(highscore_file))) {
-            writer.write(String.valueOf(highscore));
-        } catch (IOException e) {
-            System.err.println("Error saving highscore: " + e.getMessage());
+    private void saveHS(){
+        try(BufferedWriter bw=new BufferedWriter(new FileWriter(FILE))){
+            bw.write(String.valueOf(hs));
+        }catch(IOException e){
+            System.out.println("Error saving high score");
         }
     }
 
-    // Highscore label update karna
-    private void updatehighscorelabel() {
-        if (highscore == Integer.MAX_VALUE) {
-            highscorelabel.setText("🏆 High Score: --");
-        } else {
-            highscorelabel.setText("🏆 High Score: " + highscore + " attempts");
-        }
+    private void updateHS(){
+        if (hs==Integer.MAX_VALUE)
+            hsLbl.setText("🏆 High Score: --");
+        else
+            hsLbl.setText("🏆 High Score: " + hs + " attempts");
     }
 
-    // Jab guess button ya enter key press hoti hai to ye method chalegi
     @Override
-    public void actionPerformed(ActionEvent e) {
-        String userinput = inputfield.getText().trim();
+    public void actionPerformed(ActionEvent e){
+        String val=in.getText().trim();
 
-        if (userinput.isEmpty()) {
-            messagelabel.setText("Please enter a number.");
-            messagelabel.setForeground(Color.ORANGE);
+        if(val.isEmpty()){
+            msg.setText("Enter a number first.");
+            msg.setForeground(Color.ORANGE);
             return;
         }
 
-        try {
-            int guess = Integer.parseInt(userinput); // Input ko number mein convert karo
+        try{
+            int g=Integer.parseInt(val);
 
-            if (guess < 1 || guess > 100) {
-                messagelabel.setText("Enter a number between 1 and 100.");
-                messagelabel.setForeground(Color.ORANGE);
+            if(g<1 || g>100){
+                msg.setText("Number must be between 1 and 100.");
+                msg.setForeground(Color.ORANGE);
                 return;
             }
 
-            attemptsleft--; // Attempt kam karo
-            attemptsused++; // Used attempt barhao
+            left--;
+            used++;
 
-            if (guess == randomnumber) {
-                // Sahi number guess kiya
-                messagelabel.setText("🎉 Correct! You guessed it in " + attemptsused + " attempts.");
-                messagelabel.setForeground(Color.GREEN);
+            if(g==n){
+                msg.setText("🎉 Correct! Attempts: " + used);
+                msg.setForeground(Color.GREEN);
 
-                // Highscore update karo agar better hai
-                if (attemptsused < highscore) {
-                    highscore = attemptsused;
-                    savehighscore();
-                    updatehighscorelabel();
+                if(used<hs){
+                    hs=used;
+                    saveHS();
+                    updateHS();
                 }
+                in.setEditable(false);
+                gBtn.setEnabled(false);
+                rBtn.setEnabled(true);
+                
+            }else{
+                if(g<rn)
+                    msg.setText("📉 Too Low! Left: " + left);
+                else
+                    msg.setText("📈 Too High! Left: " + left);
 
-                inputfield.setEditable(false);
-                guessbutton.setEnabled(false);
-                resetbutton.setEnabled(true);
-
-            } else {
-                // Wrong guess message
-                JOptionPane.showMessageDialog(this, "Wrong guess!", "Try Again", JOptionPane.WARNING_MESSAGE);
-
-                if (guess < randomnumber) {
-                    messagelabel.setText("📉 Too low! Attempts left: " + attemptsleft);
-                } else {
-                    messagelabel.setText("📈 Too high! Attempts left: " + attemptsleft);
-                }
-                messagelabel.setForeground(Color.CYAN);
+                msg.setForeground(Color.CYAN);
             }
 
-            // Attempts khatam hogaye
-            if (attemptsleft == 0 && guess != randomnumber) {
-                messagelabel.setText("😢 Out of attempts! Number was " + randomnumber);
-                messagelabel.setForeground(Color.RED);
-                inputfield.setEditable(false);
-                guessbutton.setEnabled(false);
-                resetbutton.setEnabled(true);
+            if(left==0 && g!=rn){
+                msg.setText("😢 Game Over! Number was " + rn);
+                msg.setForeground(Color.RED);
+                in.setEditable(false);
+                gBtn.setEnabled(false);
+                rBtn.setEnabled(true);
             }
 
-        } catch (NumberFormatException ex) {
-            // Agar number na ho to
-            messagelabel.setText("Invalid input. Please enter a number.");
-            messagelabel.setForeground(Color.ORANGE);
+        }catch(NumberFormatException ex){
+            msg.setText("Invalid input.");
+            msg.setForeground(Color.ORANGE);
         }
     }
 
-    // Custom background panel class
-    private class backgroundpanel extends JPanel {
-        private final Image backgroundimage;
+    private class BgPanel extends JPanel {
+        private final Image img; //backgroundImage
 
-        public backgroundpanel() {
-            java.net.URL imgUrl = getClass().getResource("areeba.png");
-            if (imgUrl != null) {
-                ImageIcon icon = new ImageIcon(imgUrl);
-                backgroundimage = icon.getImage(); // Image load karo
-            } else {
-                System.err.println("Image not found");
-                backgroundimage = null;
+        public BgPanel(){
+            java.net.URL url=getClass().getResource("kashif.png");
+            if(url!=null){
+                img=new ImageIcon(url).getImage();
+            }else{
+                img=null;
             }
         }
 
-        // Image ko paint karne wali method
         @Override
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(Graphics g){
             super.paintComponent(g);
-            if (backgroundimage != null) {
-                g.drawImage(backgroundimage, 0, 0, getWidth(), getHeight(), this);
-            } else {
-                g.setColor(Color.DARK_GRAY); // Fallback color
-                g.fillRect(0, 0, getWidth(), getHeight());
+            if(img!=null)
+                g.drawImage(img,0,0,getWidth(),getHeight(),this);
+            else{
+                g.setColor(Color.DARK_GRAY);
+                g.fillRect(0,0,getWidth(),getHeight());
             }
         }
     }
-
-    // Main method — Program yahan se start hota hai
-    public static void main(String[] args) {
-        new NumberGuessGame(); // Game start karo
+    public static void main(String[] args){
+        new NumberGuessGame();
     }
 }
