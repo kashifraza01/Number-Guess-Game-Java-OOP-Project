@@ -150,7 +150,7 @@ public class NumberGuessGame extends JFrame implements ActionListener{
             left--;
             used++;
 
-            if(g==n){
+            if(g==rn){
                 msg.setText("🎉 Correct! Attempts: " + used);
                 msg.setForeground(Color.GREEN);
 
@@ -212,3 +212,4 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         new NumberGuessGame();
     }
 }
+
