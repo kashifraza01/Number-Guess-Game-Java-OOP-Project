@@ -9,13 +9,13 @@ import java.util.Random;
 public class NumberGuessGame extends JFrame implements ActionListener{
 
     private final JTextField in; //inputField
-    private final JButton gBtn,rBtn; //guessButton,resetButton
-    private final JLabel msg,hsLbl; //messageLabel,highScoreLabel
+    private final JButton gbtn,rbtn; //guessbutton,resetbutton
+    private final JLabel msg,hslbl; //messagelabel,highscorelabel
 
-    private int rn,left,used,hs = Integer.MAX_VALUE; //randomNumber,attemptsLeft,attemptsUsed,highScore
+    private int rn,left,used,hs = Integer.MAX_VALUE; //randomnumber,attemptsleft,attemptsused,highscore
 
-    private static final int MAX=10; //maxAttempts
-    private static final String FILE="highscore.txt"; //highScoreFile
+    private static final int MAX=10; //maxattempts
+    private static final String FILE="highscore.txt"; //highscorefile
 
     public NumberGuessGame(){
         setTitle("🎯 Number Guessing Game");
@@ -24,16 +24,16 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         setLocationRelativeTo(null);
         setResizable(false);
 
-        BgPanel p=new BgPanel(); //backgroundPanel
+        bgpanel p=new bgpanel(); //backgroundpanel
         p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
         p.setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
         add(p);
 
-        JLabel title=new JLabel("🎯 Guess number between 1 and 100",JLabel.CENTER);
-        title.setFont(new Font("Segoe UI Emoji",Font.BOLD,22));
-        title.setForeground(Color.WHITE);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        p.add(title);
+        JLabel t=new JLabel("🎯 Guess number between 1 and 100",JLabel.CENTER); //t = title
+        t.setFont(new Font("Segoe UI Emoji",Font.BOLD,22));
+        t.setForeground(Color.WHITE);
+        t.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(t);
         p.add(Box.createRigidArea(new Dimension(0,20)));
 
         in=new JTextField();
@@ -45,15 +45,15 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         p.add(in);
         p.add(Box.createRigidArea(new Dimension(0,15)));
 
-        gBtn=new JButton("Guess");
-        gBtn.setFont(new Font("Segoe UI Emoji",Font.BOLD,18));
-        gBtn.setBackground(new Color(0,123,255));
-        gBtn.setForeground(Color.WHITE);
-        gBtn.setFocusPainted(false);
-        gBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        gBtn.addActionListener(this);
+        gbtn=new JButton("Guess");
+        gbtn.setFont(new Font("Segoe UI Emoji",Font.BOLD,18));
+        gbtn.setBackground(new Color(0,123,255));
+        gbtn.setForeground(Color.WHITE);
+        gbtn.setFocusPainted(false);
+        gbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        gbtn.addActionListener(this);
         in.addActionListener(this);
-        p.add(gBtn);
+        p.add(gbtn);
         p.add(Box.createRigidArea(new Dimension(0,15)));
 
         msg=new JLabel("You have 10 attempts.",JLabel.CENTER);
@@ -63,29 +63,29 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         p.add(msg);
         p.add(Box.createRigidArea(new Dimension(0,10)));
 
-        hsLbl=new JLabel("🏆 High Score: --",JLabel.CENTER);
-        hsLbl.setFont(new Font("Segoe UI Emoji",Font.PLAIN,16));
-        hsLbl.setForeground(new Color(144,238,144));
-        hsLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
-        p.add(hsLbl);
+        hslbl=new JLabel("🏆 High Score: --",JLabel.CENTER);
+        hslbl.setFont(new Font("Segoe UI Emoji",Font.PLAIN,16));
+        hslbl.setForeground(new Color(144,238,144));
+        hslbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(hslbl);
         p.add(Box.createRigidArea(new Dimension(0,20)));
 
-        rBtn=new JButton("Reset Game");
-        rBtn.setFont(new Font("Segoe UI Emoji",Font.BOLD,16));
-        rBtn.setBackground(new Color(220,53,69));
-        rBtn.setForeground(Color.WHITE);
-        rBtn.setFocusPainted(false);
-        rBtn.setEnabled(false);
-        rBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        rBtn.addActionListener(e -> reset());
-        p.add(rBtn);
+        rbtn=new JButton("Reset Game");
+        rbtn.setFont(new Font("Segoe UI Emoji",Font.BOLD,16));
+        rbtn.setBackground(new Color(220,53,69));
+        rbtn.setForeground(Color.WHITE);
+        rbtn.setFocusPainted(false);
+        rbtn.setEnabled(false);
+        rbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rbtn.addActionListener(e->reset());
+        p.add(rbtn);
 
-        loadHS();
-        genNum();
+        loadhs();//loadhighscore
+        gennum(); //generatenum
         setVisible(true);
     }
 
-    private void genNum(){
+    private void gennum(){ //gennum = generate number
         rn=new Random().nextInt(100)+1;
         left=MAX;
         used=0;
@@ -93,16 +93,16 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         msg.setForeground(Color.YELLOW);
     }
 
-    private void reset(){
-        genNum();
+    private void reset(){ 
+        gennum(); 
         in.setText("");
         in.setEditable(true);
         in.requestFocus();
-        gBtn.setEnabled(true);
-        rBtn.setEnabled(false);
+        gbtn.setEnabled(true);
+        rbtn.setEnabled(false);
     }
 
-    private void loadHS(){
+    private void loadhs(){
         try(BufferedReader br=new BufferedReader(new FileReader(FILE))){
             String line=br.readLine();
             if(line!=null)
@@ -110,10 +110,10 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         }catch(Exception e){
             hs=Integer.MAX_VALUE;
         }
-        updateHS();
+        updatehs(); //updatehighscore
     }
 
-    private void saveHS(){
+    private void savehs(){ // hs = highscore
         try(BufferedWriter bw=new BufferedWriter(new FileWriter(FILE))){
             bw.write(String.valueOf(hs));
         }catch(IOException e){
@@ -121,11 +121,11 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         }
     }
 
-    private void updateHS(){
+    private void updatehs(){
         if (hs==Integer.MAX_VALUE)
-            hsLbl.setText("🏆 High Score: --");
+            hslbl.setText("🏆 High Score: --");
         else
-            hsLbl.setText("🏆 High Score: " + hs + " attempts");
+            hslbl.setText("🏆 High Score: " + hs + " attempts");
     }
 
     @Override
@@ -133,7 +133,7 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         String val=in.getText().trim();
 
         if(val.isEmpty()){
-            msg.setText("Enter a number first.");
+            msg.setText("enter a number first.");
             msg.setForeground(Color.ORANGE);
             return;
         }
@@ -156,18 +156,18 @@ public class NumberGuessGame extends JFrame implements ActionListener{
 
                 if(used<hs){
                     hs=used;
-                    saveHS();
-                    updateHS();
+                    savehs();
+                    updatehs();
                 }
                 in.setEditable(false);
-                gBtn.setEnabled(false);
-                rBtn.setEnabled(true);
+                gbtn.setEnabled(false);
+                rbtn.setEnabled(true);
                 
             }else{
                 if(g<rn)
-                    msg.setText("📉 Too Low! Left: " + left);
+                    msg.setText("📉 Too Low! Left: " +left);
                 else
-                    msg.setText("📈 Too High! Left: " + left);
+                    msg.setText("📈 Too High! Left: " +left);
 
                 msg.setForeground(Color.CYAN);
             }
@@ -176,20 +176,19 @@ public class NumberGuessGame extends JFrame implements ActionListener{
                 msg.setText("😢 Game Over! Number was " + rn);
                 msg.setForeground(Color.RED);
                 in.setEditable(false);
-                gBtn.setEnabled(false);
-                rBtn.setEnabled(true);
+                gbtn.setEnabled(false);
+                rbtn.setEnabled(true);
             }
 
         }catch(NumberFormatException ex){
-            msg.setText("Invalid input.");
+            msg.setText("invalid input.");
             msg.setForeground(Color.ORANGE);
         }
     }
 
-    private class BgPanel extends JPanel {
-        private final Image img; //backgroundImage
-
-        public BgPanel(){
+    private class bgpanel extends JPanel{  //background panel
+        private final Image img; //background image
+        public bgpanel(){
             java.net.URL url=getClass().getResource("kashif.png");
             if(url!=null){
                 img=new ImageIcon(url).getImage();
