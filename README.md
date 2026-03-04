@@ -100,7 +100,6 @@ Here are some features you could add:
 ## 👨‍💻 Author
 
 **Kashif Raza**
-Enthusiastic Java Developer | UI Lover
 
 ---
 
