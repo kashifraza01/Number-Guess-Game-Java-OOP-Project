@@ -97,24 +97,6 @@ Here are some features you could add:
 
 ---
 
-## 🛡️ Bug Fixes (Optional – for your reference)
-
-There was a small bug in the original logic:
-
-```java
-if(g == n)
-```
-
-should be:
-
-```java
-if(g == rn)
-```
-
-This has been fixed in the current version.
-
----
-
 ## 👨‍💻 Author
 
 **Kashif Raza**
