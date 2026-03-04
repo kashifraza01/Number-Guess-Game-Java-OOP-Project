@@ -1,53 +1,54 @@
 # 🎯 Number Guessing Game (Java Swing)
 
-A simple and interactive **Number Guessing Game** built using **Java Swing GUI**.
-The player must guess a randomly generated number between **1 and 100** within **10 attempts**.
+A fun and interactive **Number Guessing Game** built using **Java Swing** and Object-Oriented Programming principles.  
+Try to guess the number randomly chosen between **1 and 100** within a limited number of attempts!
+
+👉 **Repository:** https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git
 
 ---
 
-## 📌 Features
+## 🕹️ Game Features
 
-* 🎯 Random number generation (1–100)
-* 🔢 Maximum 10 attempts per game
-* 📉 Hints: Too High / Too Low
-* 🏆 High Score tracking (stored in file)
-* 🔄 Reset game option
-* 🖼️ Custom background image support
-* 🎨 Styled UI with colors and emojis
-* 💾 Persistent high score using `highscore.txt`
+✔ Random number between 1 and 100  
+✔ Maximum of 10 attempts  
+✔ Hints for each guess (Too High / Too Low)  
+✔ Persistent high score tracking  
+✔ Clean and colorful Java Swing GUI  
+✔ File handling (`highscore.txt`)  
 
 ---
 
 ## 🛠️ Technologies Used
 
-* Java
-* Java Swing (GUI)
-* AWT
-* File Handling (BufferedReader & BufferedWriter)
-* Object-Oriented Programming (OOP)
+- ✅ Java
+- ✅ Java Swing & AWT
+- ✅ Object-Oriented Programming
+- ✅ File I/O (BufferedReader & BufferedWriter)
 
 ---
 
-## 🚀 How to Run
+## 🚀 How to Run (Step-by-Step)
 
-1. Clone the repository:
+1. **Clone the repository**
 
-   ```bash
-   git clone https://github.com/kashifraza01/number-guess-game.git
-   ```
+```bash
+git clone https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git
+````
 
-2. Open the project in any Java IDE (IntelliJ, Eclipse, NetBeans, etc.)
+2. **Open the project** in a Java IDE
+   (IntelliJ IDEA, Eclipse, NetBeans, etc.)
 
-3. Make sure:
+3. **Verify resource files**
+   Make sure you have:
 
-   * `kashif.png` is inside the same package directory.
-   * `highscore.txt` exists (or it will be created automatically).
+   * `kashif.png` (background image)
+   * `highscore.txt` (created automatically on first run)
 
-4. Run:
+4. **Run the application**
 
-   ```bash
-   NumberGuessGame.java
-   ```
+```bash
+java NumberGuessGame
+```
 
 ---
 
@@ -55,20 +56,25 @@ The player must guess a randomly generated number between **1 and 100** within *
 
 1. Enter a number between **1 and 100**.
 2. Click **Guess** (or press Enter).
-3. You will receive hints:
+3. You will see:
 
-   * 📉 Too Low
-   * 📈 Too High
-4. You have **10 attempts**.
-5. If you guess correctly:
-
-   * 🎉 You win!
-   * 🏆 High score updates if your attempts are fewer.
-6. Click **Reset Game** to play again.
+   * 📉 Too Low!
+   * 📈 Too High!
+   * 🎉 Correct! if guessed right
+4. You have **10 attempts** total.
+5. If you guess correctly with fewer attempts than the current high score, the high score updates automatically!
 
 ---
 
-## 📂 Project Structure
+## 🧠 How the High Score Works
+
+✔ Successfully guessing with fewer attempts updates `highscore.txt`
+✔ High score is shown every time the app launches
+✔ If no high score exists yet, it displays as `--`
+
+---
+
+## 📁 Project Structure
 
 ```
 numberguessgame/
@@ -79,24 +85,51 @@ numberguessgame/
 
 ---
 
-## 🏆 High Score System
+## 💡 Future Improvements
 
-* The lowest number of attempts is saved as the high score.
-* Stored in `highscore.txt`
-* Automatically loads when the game starts.
+Here are some features you could add:
+
+* 🔹 Difficulty levels (Easy / Medium / Hard)
+* 🔹 Sound effects and animations
+* 🔹 Timer to track speed of guesses
+* 🔹 Better graphics & UX
+* 🔹 Web or mobile version
 
 ---
 
-## 💡 Future Improvements
+## 🛡️ Bug Fixes (Optional – for your reference)
 
-* Add difficulty levels (Easy / Medium / Hard)
-* Add sound effects
-* Add timer mode
-* Improve UI animations
-* Convert to multiplayer mode
+There was a small bug in the original logic:
+
+```java
+if(g == n)
+```
+
+should be:
+
+```java
+if(g == rn)
+```
+
+This has been fixed in the current version.
 
 ---
 
 ## 👨‍💻 Author
 
-Developed by **Kashif Raza**
+**Kashif Raza**
+Enthusiastic Java Developer | UI Lover
+
+---
+
+## ⭐ Support & Star
+
+If you enjoy this project, please ⭐ **Star** the repo and share it with others:
+
+👉 [https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git](https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git)
+
+---
+
+## 📝 License
+
+This project is open-source and free to use. Feel free to customize and improve! 🎨
