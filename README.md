@@ -83,9 +83,13 @@ Number-Guess-Game-Java-OOP-Project/
 ```
 
 ---
-##  Screenshots
-[ss1.png]
-[ss2.png]
+
+## 📷 Screenshots
+
+|                 Guessing                 |                 Guessed                   |
+| ---------------------------------------- | ----------------------------------------- |
+| ![Screenshot1](./ss1.png) | ![Screenshot2](./ss2.png) |
+
 ---
 
 ## 💡 Future Improvements
