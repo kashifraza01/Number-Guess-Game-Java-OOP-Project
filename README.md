@@ -3,7 +3,6 @@
 A fun and interactive **Number Guessing Game** built using **Java Swing** and Object-Oriented Programming principles.  
 Try to guess the number randomly chosen between **1 and 100** within a limited number of attempts!
 
-👉 **Repository:** https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git
 
 ---
 
@@ -100,17 +99,3 @@ Here are some features you could add:
 ## 👨‍💻 Author
 
 **Kashif Raza**
-
----
-
-## ⭐ Support & Star
-
-If you enjoy this project, please ⭐ **Star** the repo and share it with others:
-
-👉 [https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git](https://github.com/kashifraza01/Number-Guess-Game-Java-OOP-Project.git)
-
----
-
-## 📝 License
-
-This project is open-source and free to use. Feel free to customize and improve! 🎨
