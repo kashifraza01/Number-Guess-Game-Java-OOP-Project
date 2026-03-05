@@ -76,7 +76,7 @@ java NumberGuessGame
 ## 📁 Project Structure
 
 ```
-numberguessgame/
+Number-Guess-Game-Java-OOP-Project/
 │── NumberGuessGame.java
 │── kashif.png
 │── highscore.txt
