@@ -24,7 +24,7 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         setLocationRelativeTo(null);
         setResizable(false);
 
-        bgpanel p=new bgpanel(); //backgroundpanel
+        bgpanel p= new bgpanel(); //backgroundpanel
         p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
         p.setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
         add(p);
@@ -186,7 +186,7 @@ public class NumberGuessGame extends JFrame implements ActionListener{
         }
     }
 
-    private class bgpanel extends JPanel{  //background panel
+    private static class bgpanel extends JPanel{  //background panel
         private final Image img; //background image
         public bgpanel(){
             java.net.URL url=getClass().getResource("kashif.png");
